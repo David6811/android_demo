@@ -17,7 +17,8 @@ class HomeFragment : Fragment() {
     private val notes: MutableList<Note> = mutableListOf(
         Note(
             objectId = "1",
-            content = "This is the first note",
+            title = "This is the first note",
+            content = "Houses destroyed as lightning strikes spark new fires amid Victorian heatwave",
             parentObjectId = "0",
             status = 1,
             tags = "work,important",
@@ -26,7 +27,8 @@ class HomeFragment : Fragment() {
         ),
         Note(
             objectId = "2",
-            content = "This is the second note",
+            title = "This is the second note",
+            content = "There are fears of more property losses to come as heatwave conditions continue across Victoria.",
             parentObjectId = "0",
             status = 0,
             tags = "personal,todo",
@@ -47,9 +49,12 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val homeAdapter = HomeAdapter(notes)
+
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+            adapter = homeAdapter
         }
     }
 

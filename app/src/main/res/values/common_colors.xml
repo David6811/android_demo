@@ -1,0 +1,25 @@
+<resources>
+
+    <color name="divider_bg">#DEDEDE</color>
+    <color name="divider">#BDBDBD</color>
+    <color name="light_gray_half">#75222222</color>
+    <color name="gray">#999999</color>
+    <color name="fingerprint_hint_color">#802F2F2F</color>
+    <color name="settings_description">#6D6D6C</color>
+
+    <color name="black_gray">#333333</color>
+    <color name="warning_color">#f4511e</color>
+    <color name="color_primary_dark">#512DA8</color>
+    <color name="color_primary_dark_half">#50303F9F</color>
+    <color name="color_accent">#FF4081</color>
+    <color name="color_accent_half">#50FF4081</color>
+    <color name="color_primary">#673AB7</color>
+    <color name="color_primary_half">#503F51B5</color>
+    <color name="icon_gray_600">#757575</color>
+
+    <color name="colorPrimary">@color/color_primary</color>
+    <color name="colorPrimaryDark">@color/color_primary_dark</color>
+    <color name="colorAccent">@color/color_accent</color>
+
+
+</resources>
