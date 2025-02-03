@@ -4,35 +4,58 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.FragmentHomeBinding
+import com.example.myapplication.entities.Note
 
 class HomeFragment : Fragment() {
-
     private var _binding: FragmentHomeBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
+    private val notes: MutableList<Note> = mutableListOf(
+        Note(
+            objectId = "1",
+            title = "This is the first note",
+            content = "Houses destroyed as lightning strikes spark new fires amid Victorian heatwave",
+            parentObjectId = "0",
+            status = 1,
+            tags = "work,important",
+            createdAt = "2024-02-03T10:00:00Z",
+            updatedAt = "2024-02-03T12:00:00Z"
+        ),
+        Note(
+            objectId = "2",
+            title = "This is the second note",
+            content = "There are fears of more property losses to come as heatwave conditions continue across Victoria.",
+            parentObjectId = "0",
+            status = 0,
+            tags = "personal,todo",
+            createdAt = "2024-02-03T11:00:00Z",
+            updatedAt = "2024-02-03T13:00:00Z"
+        )
+    )
+
+
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        return binding.root
+    }
 
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val homeAdapter = HomeAdapter(notes)
+
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+            adapter = homeAdapter
         }
-        return root
     }
 
     override fun onDestroyView() {
