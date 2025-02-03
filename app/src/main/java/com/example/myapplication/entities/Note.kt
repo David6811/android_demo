@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "Note")
+@Entity(tableName = "note")
 data class Note(
     @PrimaryKey @ColumnInfo(name = "objectId") val objectId: String,
     val content: String,
