@@ -12,6 +12,7 @@ lifecycleLivedataKtx = "2.8.7"
 lifecycleViewmodelKtx = "2.8.7"
 navigationFragmentKtx = "2.8.6"
 navigationUiKtx = "2.8.6"
+recyclerview = "1.4.0"
 
 roomCompilerVersion = "2.6.1"
 roomGuava = "2.6.1"
@@ -43,6 +44,8 @@ androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "
 androidx-room-rxjava2 = { module = "androidx.room:room-rxjava2", version.ref = "roomRxjava2" }
 androidx-room-rxjava3 = { module = "androidx.room:room-rxjava3", version.ref = "roomRxjava3" }
 androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "roomTesting" }
+
+androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerview" }
 
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompilerVersion" }
 core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtxVersion" }

@@ -52,6 +52,7 @@ dependencies {
     implementation(libs.androidx.room.paging)
 
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.recyclerview)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
