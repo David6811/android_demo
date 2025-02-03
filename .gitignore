@@ -1,0 +1,23 @@
+# Gradle files
+.gradle/
+build
+*.iml
+.idea
+.kotlin
+# Local configuration file (sdk path, etc)
+local.properties
+
+# User-specific stuff:
+# Gradle:
+
+androidlockpattern/obj
+.DS_Store
+src/main/jniLibs/.DS_Store
+src/main/res/drawable-xxhdpi/icon_w.jpg
+src/main/res/drawable-xxxhdpi/icon_w.jpg
+captures
+application/src/main/res/raw/
+import-summary.txt
+*.exec
+3party
+.settings
