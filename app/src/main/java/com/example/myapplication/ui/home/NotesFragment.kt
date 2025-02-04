@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.databinding.FragmentHomeBinding
 import com.example.myapplication.databinding.FragmentNotesBinding
 import com.example.myapplication.entities.Note
 
@@ -50,12 +49,12 @@ class NotesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val homeAdapter = HomeAdapter(notes)
+        val notesAdapter = NotesAdapter(notes)
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
-            adapter = homeAdapter
+            adapter = notesAdapter
         }
     }
 

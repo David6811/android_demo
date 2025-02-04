@@ -5,61 +5,41 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.databinding.FragmentHomeBinding
-import com.example.myapplication.entities.Note
+import androidx.viewpager2.widget.ViewPager2
+import com.example.myapplication.R
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+
 
 class HomeFragment : Fragment() {
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
 
-    private val notes: MutableList<Note> = mutableListOf(
-        Note(
-            objectId = "1",
-            title = "This is the first note",
-            content = "Houses destroyed as lightning strikes spark new fires amid Victorian heatwave",
-            parentObjectId = "0",
-            status = 1,
-            tags = "work,important",
-            createdAt = "2024-02-03T10:00:00Z",
-            updatedAt = "2024-02-03T12:00:00Z"
-        ),
-        Note(
-            objectId = "2",
-            title = "This is the second note",
-            content = "There are fears of more property losses to come as heatwave conditions continue across Victoria.",
-            parentObjectId = "0",
-            status = 0,
-            tags = "personal,todo",
-            createdAt = "2024-02-03T11:00:00Z",
-            updatedAt = "2024-02-03T13:00:00Z"
-        )
-    )
-
+    private lateinit var tabLayout: TabLayout
+    private lateinit var viewPager: ViewPager2
+    private lateinit var adapter: HomeAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding.root
+        return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val homeAdapter = HomeAdapter(notes)
+        tabLayout = view.findViewById(R.id.tabLayout)
+        viewPager = view.findViewById(R.id.viewPager)
 
-        binding.recyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext())
-            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
-            adapter = homeAdapter
-        }
-    }
+        adapter = HomeAdapter(this)
+        viewPager.adapter = adapter
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = when (position) {
+                0 -> "Notes"
+                1 -> "Template"
+                2 -> "Favorite"
+                else -> "Notes"
+            }
+        }.attach()
     }
 }
