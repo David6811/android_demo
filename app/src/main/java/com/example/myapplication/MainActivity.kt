@@ -3,7 +3,6 @@ package com.example.myapplication
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -17,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.myapplication.dao.NoteDao
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.entities.Note
+import com.example.myapplication.util.ObjectIdGenerator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
             lifecycleScope.launch(Dispatchers.IO) {
                 try {
                     val note = Note(
-                        objectId = "1",
+                        objectId = ObjectIdGenerator.generateObjectId(),
                         title = "Title of Note 1",
                         content = "Content of Note 1",
                         parentObjectId = "0",
@@ -71,10 +71,6 @@ class MainActivity : AppCompatActivity() {
                     e.printStackTrace()  // ✅ Log errors to prevent crashes
                 }
             }
-
-//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null)
-//                .setAnchorView(R.id.fab).show()
         }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
