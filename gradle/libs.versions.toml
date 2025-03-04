@@ -23,6 +23,7 @@ roomRxjava2 = "2.6.1"
 roomRxjava3 = "2.6.1"
 roomTesting = "2.6.1"
 coreKtxVersion = "1.6.1"
+rxjava = "3.1.10"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -49,6 +50,7 @@ androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview"
 
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompilerVersion" }
 core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "coreKtxVersion" }
+rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
