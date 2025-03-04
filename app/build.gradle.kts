@@ -52,7 +52,8 @@ dependencies {
     testImplementation(libs.androidx.room.testing)
     implementation(libs.androidx.room.paging)
 
-    implementation(libs.rxjava)
+    implementation(libs.rxjava.v316)  // Use RxJava 3
+    implementation(libs.rxjava3.rxandroid)  // Use RxAndroid 3
 
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.recyclerview)

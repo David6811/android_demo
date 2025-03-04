@@ -18,6 +18,9 @@ import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.entities.Note
 import com.example.myapplication.usecase.CreateNoteUseCase
 import com.example.myapplication.util.ObjectIdGenerator
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -29,6 +32,8 @@ class MainActivity : AppCompatActivity() {
     @Inject lateinit var noteDao: NoteDao
     @Inject lateinit var createNoteUseCase: CreateNoteUseCase
 
+    private val compositeDisposable = CompositeDisposable()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (application as MyApplication).appComponent.inject(this)
@@ -39,21 +44,27 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.appBarMain.toolbar)
 
         binding.appBarMain.fab.setOnClickListener { view ->
+
+            val note = Note(
+                objectId = ObjectIdGenerator.generateObjectId(),
+                title = "Title of Note 1",
+                content = "Content of Note 1",
+                parentObjectId = "0",
+                status = 1,
+                tags = "tag1",
+                createdAt = "2025-02-03T10:00:00Z",
+                updatedAt = "2025-02-03T10:00:00Z"
+            )
+
+            compositeDisposable.add(
+                createNoteUseCase.insertNotes(note)
+                    .subscribeOn(Schedulers.io()) // Run in background
+                    .observeOn(AndroidSchedulers.mainThread()) // Observe on main thread
+                    .subscribe()
+            )
+
             lifecycleScope.launch(Dispatchers.IO) {
                 try {
-                    val note = Note(
-                        objectId = ObjectIdGenerator.generateObjectId(),
-                        title = "Title of Note 1",
-                        content = "Content of Note 1",
-                        parentObjectId = "0",
-                        status = 1,
-                        tags = "tag1",
-                        createdAt = "2025-02-03T10:00:00Z",
-                        updatedAt = "2025-02-03T10:00:00Z"
-                    )
-
-                    createNoteUseCase.insertNotes(note)
-
                     val notes = noteDao.getAll()
                     if (notes.isNotEmpty()) {
                         val firstNote = notes[0]
