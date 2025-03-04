@@ -13,15 +13,31 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.lifecycleScope
+import com.example.myapplication.dao.NoteDao
 import com.example.myapplication.databinding.ActivityMainBinding
+import com.example.myapplication.entities.Note
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    @Inject lateinit var noteDao: NoteDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        println("Dagger: MainActivity onCreate")  // Debugging line
+        try {
+            (application as MyApplication).appComponent.inject(this)
+        } catch (e: Exception) {
+            println("Dagger1: Error during injection: ${e.message}")  // Print the exception message
+            e.printStackTrace()  // Properly print the stack trace
+        }
+
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -29,9 +45,36 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.appBarMain.toolbar)
 
         binding.appBarMain.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .setAnchorView(R.id.fab).show()
+            lifecycleScope.launch(Dispatchers.IO) {
+                try {
+                    val note = Note(
+                        objectId = "1",
+                        title = "Title of Note 1",
+                        content = "Content of Note 1",
+                        parentObjectId = "0",
+                        status = 1,
+                        tags = "tag1",
+                        createdAt = "2025-02-03T10:00:00Z",
+                        updatedAt = "2025-02-03T10:00:00Z"
+                    )
+
+                    noteDao.insertAll(note);
+
+                    val notes = noteDao.getAll()
+                    if (notes.isNotEmpty()) {
+                        val firstNote = notes[0]
+                        println("First note: ${firstNote.title}")
+                    } else {
+                        println("No notes found in database.")
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()  // ✅ Log errors to prevent crashes
+                }
+            }
+
+//            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                .setAction("Action", null)
+//                .setAnchorView(R.id.fab).show()
         }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView

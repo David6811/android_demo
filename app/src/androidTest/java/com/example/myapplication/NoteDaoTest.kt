@@ -37,6 +37,7 @@ class NoteDaoTest {
         // Create a list of Notes to insert
         val note1 = Note(
             objectId = "1",
+            title = "Title of Note 1",
             content = "Content of Note 1",
             parentObjectId = "0",
             status = 1,
@@ -46,6 +47,7 @@ class NoteDaoTest {
         )
         val note2 = Note(
             objectId = "2",
+            title = "Title of Note 2",
             content = "Content of Note 2",
             parentObjectId = "0",
             status = 1,
@@ -72,6 +74,7 @@ class NoteDaoTest {
         // Create a note to insert and delete
         val note = Note(
             objectId = "1",
+            title = "Title of Note 1",
             content = "Content of Note 1",
             parentObjectId = "0",
             status = 1,
@@ -96,6 +99,7 @@ class NoteDaoTest {
         // Create a list of notes to insert
         val note1 = Note(
             objectId = "1",
+            title = "Title of Note 1",
             content = "Content of Note 1",
             parentObjectId = "0",
             status = 1,
@@ -105,6 +109,7 @@ class NoteDaoTest {
         )
         val note2 = Note(
             objectId = "2",
+            title = "Title of Note 2",
             content = "Content of Note 2",
             parentObjectId = "0",
             status = 1,
