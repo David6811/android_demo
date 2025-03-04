@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
@@ -11,6 +12,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import com.example.myapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -48,6 +50,33 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
+        val searchItem = menu.findItem(R.id.action_search)
+
+        // Set the SearchView explicitly if it's not set in XML
+        val searchView = searchItem.actionView as? SearchView
+        if (searchView != null) {
+            // Expand the search view immediately when menu is created
+            searchItem.expandActionView()
+
+            // Optional: Set a hint for the search field
+            searchView.queryHint = "Search here..."
+
+            // Set up a listener for search input
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    // Handle search query submission (e.g., filter data)
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    // Handle live search filtering
+                    return false
+                }
+            })
+        } else {
+            Log.e("Menu", "SearchView is null!")
+        }
+
         return true
     }
 
