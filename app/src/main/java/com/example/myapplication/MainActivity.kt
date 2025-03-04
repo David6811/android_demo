@@ -31,15 +31,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        println("Dagger: MainActivity onCreate")  // Debugging line
-        try {
-            (application as MyApplication).appComponent.inject(this)
-        } catch (e: Exception) {
-            println("Dagger1: Error during injection: ${e.message}")  // Print the exception message
-            e.printStackTrace()  // Properly print the stack trace
-        }
-
-
+        (application as MyApplication).appComponent.inject(this)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
