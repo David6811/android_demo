@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.myapplication.dao.NoteDao
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.entities.Note
+import com.example.myapplication.usecase.CreateNoteUseCase
 import com.example.myapplication.util.ObjectIdGenerator
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     @Inject lateinit var noteDao: NoteDao
+    @Inject lateinit var createNoteUseCase: CreateNoteUseCase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,12 +60,14 @@ class MainActivity : AppCompatActivity() {
                         updatedAt = "2025-02-03T10:00:00Z"
                     )
 
-                    noteDao.insertAll(note);
+                    createNoteUseCase.insertNotes(note)
 
                     val notes = noteDao.getAll()
                     if (notes.isNotEmpty()) {
                         val firstNote = notes[0]
                         println("First note: ${firstNote.title}")
+                        println("Notes Size: ${notes.size}")
+
                     } else {
                         println("No notes found in database.")
                     }
