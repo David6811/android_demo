@@ -12,7 +12,6 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.lifecycleScope
 import com.example.myapplication.dao.NoteDao
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.entities.Note
@@ -21,16 +20,16 @@ import com.example.myapplication.util.ObjectIdGenerator
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    @Inject lateinit var noteDao: NoteDao
-    @Inject lateinit var createNoteUseCase: CreateNoteUseCase
+    @Inject
+    lateinit var noteDao: NoteDao
+    @Inject
+    lateinit var createNoteUseCase: CreateNoteUseCase
 
     private val compositeDisposable = CompositeDisposable()
 
@@ -43,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
-        binding.appBarMain.fab.setOnClickListener { view ->
+        binding.appBarMain.fab.setOnClickListener {
 
             val note = Note(
                 objectId = ObjectIdGenerator.generateObjectId(),
@@ -62,22 +61,6 @@ class MainActivity : AppCompatActivity() {
                     .observeOn(AndroidSchedulers.mainThread()) // Observe on main thread
                     .subscribe()
             )
-
-//            lifecycleScope.launch(Dispatchers.IO) {
-//                try {
-//                    val notes = noteDao.getAll()
-//                    if (notes.isNotEmpty()) {
-//                        val firstNote = notes[0]
-//                        println("First note: ${firstNote.title}")
-//                        println("Notes Size: ${notes.size}")
-//
-//                    } else {
-//                        println("No notes found in database.")
-//                    }
-//                } catch (e: Exception) {
-//                    e.printStackTrace()  // ✅ Log errors to prevent crashes
-//                }
-//            }
         }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
