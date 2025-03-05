@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class CreateNoteUseCase @Inject constructor(private val noteDao: NoteDao) {
 
-    fun insertNotes( note: Note): Completable {
+    fun insertNotes(note: Note): Completable {
         return Completable
             .fromCallable { noteDao.insertAll(note) }
     }
