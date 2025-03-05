@@ -63,21 +63,21 @@ class MainActivity : AppCompatActivity() {
                     .subscribe()
             )
 
-            lifecycleScope.launch(Dispatchers.IO) {
-                try {
-                    val notes = noteDao.getAll()
-                    if (notes.isNotEmpty()) {
-                        val firstNote = notes[0]
-                        println("First note: ${firstNote.title}")
-                        println("Notes Size: ${notes.size}")
-
-                    } else {
-                        println("No notes found in database.")
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()  // ✅ Log errors to prevent crashes
-                }
-            }
+//            lifecycleScope.launch(Dispatchers.IO) {
+//                try {
+//                    val notes = noteDao.getAll()
+//                    if (notes.isNotEmpty()) {
+//                        val firstNote = notes[0]
+//                        println("First note: ${firstNote.title}")
+//                        println("Notes Size: ${notes.size}")
+//
+//                    } else {
+//                        println("No notes found in database.")
+//                    }
+//                } catch (e: Exception) {
+//                    e.printStackTrace()  // ✅ Log errors to prevent crashes
+//                }
+//            }
         }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
