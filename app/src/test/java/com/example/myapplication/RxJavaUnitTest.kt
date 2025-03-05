@@ -1,6 +1,8 @@
 package com.example.myapplication
 
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.ObservableEmitter
+import io.reactivex.rxjava3.core.ObservableOnSubscribe
 import org.junit.Test
 
 class RxJavaUnitTest {
@@ -22,6 +24,28 @@ class RxJavaUnitTest {
         val testObserver = observable.test()
 
         testObserver.assertValues(1, 2, 3)
+        testObserver.assertComplete()
+    }
+
+    /**
+     * never creates an observable that never emits values or completes,
+     * while empty creates an observable that completes immediately without emitting any values.
+     */
+    @Test
+    fun testObservableNeverEmits() {
+        val observable = Observable.never<Int>()
+        val testObserver = observable.test()
+
+        testObserver.assertNoValues()
+        testObserver.assertNotComplete()
+    }
+
+    @Test
+    fun testObservableEmpty() {
+        val observable = Observable.empty<Int>()
+        val testObserver = observable.test()
+
+        testObserver.assertNoValues()
         testObserver.assertComplete()
     }
 
