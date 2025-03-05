@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.notes
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.entities.Note
 
-class NotesAdapter(private val noteList: List<Note>) :
+class NotesAdapter(private var noteList: List<Note>) :
     RecyclerView.Adapter<NotesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,6 +25,13 @@ class NotesAdapter(private val noteList: List<Note>) :
     override fun getItemCount(): Int {
         return noteList.size
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateNotes(newNotes: List<Note>) {
+        noteList = newNotes
+        notifyDataSetChanged()
+    }
+
 
     // ViewHolder class
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
