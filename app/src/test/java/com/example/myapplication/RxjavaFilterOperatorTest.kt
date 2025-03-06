@@ -116,7 +116,7 @@ class RxjavaFilterOperatorTest {
             Thread.sleep(300) // 等待 300ms，确保 debounce 时间足够
             emitter.onComplete() // 完成
         }
-            .debounce(100, TimeUnit.MILLISECONDS) // 设置 debounce 时间为 200ms
+            .debounce(200, TimeUnit.MILLISECONDS) // 设置 debounce 时间为 200ms
 
         // 创建 TestObserver 并订阅
         val testObserver = observable.test()
