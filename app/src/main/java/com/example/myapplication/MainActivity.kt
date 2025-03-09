@@ -48,6 +48,19 @@ class MainActivity : AppCompatActivity() {
             // Create an explicit intent for an Activity in your app.
             val emptyIntent = PendingIntent.getActivity(this, 0, Intent(), PendingIntent.FLAG_IMMUTABLE)
 
+            // Define intents for actions
+            val openClipboardIntent = PendingIntent.getActivity(
+                this, 0, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE
+            )
+
+            val persistNoteIntent = PendingIntent.getActivity(
+                this, 1, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE
+            )
+
+            val captureScreenIntent = PendingIntent.getActivity(
+                this, 2, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE
+            )
+
 
             val channelId = "action"
             // Create the NotificationChannel.
@@ -76,9 +89,17 @@ class MainActivity : AppCompatActivity() {
                 .setAutoCancel(true)
                 .addAction(
                     NotificationCompat.Action.Builder(
-                        R.drawable.ic_menu_camera, // Replace with a better icon
-                        "Open Clipboard", // Better action text
-                        emptyIntent
+                        R.drawable.ic_menu_slideshow, "Persist", openClipboardIntent
+                    ).build()
+                )
+                .addAction(
+                    NotificationCompat.Action.Builder(
+                        R.drawable.ic_menu_camera, "Capture", persistNoteIntent
+                    ).build()
+                )
+                .addAction(
+                    NotificationCompat.Action.Builder(
+                        R.drawable.ic_menu_camera, "Launch", captureScreenIntent
                     ).build()
                 )
                 .build()
