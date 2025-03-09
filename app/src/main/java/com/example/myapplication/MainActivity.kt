@@ -15,6 +15,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.NotificationCompat
 import com.example.myapplication.dao.NoteDao
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.entities.Note
@@ -40,18 +41,29 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channelId = "action"
             // Create the NotificationChannel.
             val name = getString(R.string.channel_name)
             val descriptionText = getString(R.string.channel_description)
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel_id = "action"
-            val mChannel = NotificationChannel(channel_id, name, importance)
+            val importance = NotificationManager.IMPORTANCE_LOW
+            val mChannel = NotificationChannel(channelId, name, importance)
             mChannel.description = descriptionText
             // Register the channel with the system. You can't change the importance
             // or other notification behaviors after this.
             val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(mChannel)
+
+            var notification = NotificationCompat.Builder(this, channelId)
+                .setSmallIcon(R.drawable.ic_content_copy_grey_24dp)
+                .setContentTitle("Clipboard Assistant")
+                .setContentText("Easily manage your clipboard, extract text from screenshots, and return to AnyCopy anytime.")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT).build()
+
+            notificationManager.notify(1, notification) // Display the notification with an ID (e.g., 1)
+
         }
+
+
         
         (application as MyApplication).appComponent.inject(this)
 
