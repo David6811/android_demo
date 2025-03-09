@@ -1,5 +1,11 @@
 package com.example.myapplication
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -12,6 +18,8 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.example.myapplication.dao.NoteDao
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.entities.Note
@@ -35,6 +43,77 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create an explicit intent for an Activity in your app.
+            val emptyIntent = PendingIntent.getActivity(this, 0, Intent(), PendingIntent.FLAG_IMMUTABLE)
+
+            // Define intents for actions
+            val openClipboardIntent = PendingIntent.getActivity(
+                this, 0, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE
+            )
+
+            val persistNoteIntent = PendingIntent.getActivity(
+                this, 1, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE
+            )
+
+            val captureScreenIntent = PendingIntent.getActivity(
+                this, 2, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE
+            )
+
+
+            val channelId = "action"
+            // Create the NotificationChannel.
+            val name = getString(R.string.channel_name)
+            val descriptionText = getString(R.string.channel_description)
+            val importance = NotificationManager.IMPORTANCE_LOW
+            val mChannel = NotificationChannel(channelId, name, importance).apply {
+                description = descriptionText
+                enableLights(true)
+                lightColor = Color.BLUE
+                enableVibration(true)
+            }
+
+            // Register the channel with the system. You can't change the importance
+            // or other notification behaviors after this.
+            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(mChannel)
+
+            val bigTextStyle = NotificationCompat.BigTextStyle()
+                .bigText("Easily manage your clipboard, extract text from screenshots, and return to AnyCopy anytime.")
+
+            var notification = NotificationCompat.Builder(this, channelId)
+                .setSmallIcon(R.drawable.ic_content_copy_grey_24dp)
+                .setContentTitle("Clipboard Assistant")
+                .setContentText("Easily manage your clipboard, extract text from screenshots, and return to AnyCopy anytime.")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setColor(ContextCompat.getColor(this, R.color.color_primary))
+                .setStyle(bigTextStyle)
+                // Set the intent that fires when the user taps the notification.
+                //.setAutoCancel(true)
+                .addAction(
+                    NotificationCompat.Action.Builder(
+                        R.drawable.ic_menu_slideshow, "Persist", openClipboardIntent
+                    ).build()
+                )
+                .addAction(
+                    NotificationCompat.Action.Builder(
+                        R.drawable.ic_menu_camera, "Capture", persistNoteIntent
+                    ).build()
+                )
+                .addAction(
+                    NotificationCompat.Action.Builder(
+                        R.drawable.ic_menu_camera, "Launch", captureScreenIntent
+                    ).build()
+                )
+                .build()
+
+            notificationManager.notify(1, notification) // Display the notification with an ID (e.g., 1)
+
+        }
+
+
+        
         (application as MyApplication).appComponent.inject(this)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
