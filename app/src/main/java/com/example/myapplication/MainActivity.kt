@@ -2,6 +2,8 @@ package com.example.myapplication
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -41,6 +43,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create an explicit intent for an Activity in your app.
+            val emptyIntent = PendingIntent.getActivity(this, 0, Intent(), PendingIntent.FLAG_IMMUTABLE)
+
+
             val channelId = "action"
             // Create the NotificationChannel.
             val name = getString(R.string.channel_name)
@@ -57,7 +63,11 @@ class MainActivity : AppCompatActivity() {
                 .setSmallIcon(R.drawable.ic_content_copy_grey_24dp)
                 .setContentTitle("Clipboard Assistant")
                 .setContentText("Easily manage your clipboard, extract text from screenshots, and return to AnyCopy anytime.")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT).build()
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                // Set the intent that fires when the user taps the notification.
+                .setAutoCancel(true)
+                .addAction(R.drawable.ic_menu_camera, "Action", emptyIntent)
+                .build()
 
             notificationManager.notify(1, notification) // Display the notification with an ID (e.g., 1)
 
