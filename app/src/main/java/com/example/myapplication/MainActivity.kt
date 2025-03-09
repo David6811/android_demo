@@ -79,14 +79,18 @@ class MainActivity : AppCompatActivity() {
             val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(mChannel)
 
+            val bigTextStyle = NotificationCompat.BigTextStyle()
+                .bigText("Easily manage your clipboard, extract text from screenshots, and return to AnyCopy anytime.")
+
             var notification = NotificationCompat.Builder(this, channelId)
                 .setSmallIcon(R.drawable.ic_content_copy_grey_24dp)
                 .setContentTitle("Clipboard Assistant")
                 .setContentText("Easily manage your clipboard, extract text from screenshots, and return to AnyCopy anytime.")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setColor(ContextCompat.getColor(this, R.color.color_primary))
+                .setStyle(bigTextStyle)
                 // Set the intent that fires when the user taps the notification.
-                .setAutoCancel(true)
+                //.setAutoCancel(true)
                 .addAction(
                     NotificationCompat.Action.Builder(
                         R.drawable.ic_menu_slideshow, "Persist", openClipboardIntent
