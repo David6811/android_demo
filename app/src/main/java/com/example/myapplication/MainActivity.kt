@@ -22,6 +22,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItems
+import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.example.myapplication.dao.NoteDao
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.entities.Note
@@ -118,10 +119,11 @@ class MainActivity : AppCompatActivity() {
         val myItems = listOf("Hello", "World")
 
         MaterialDialog(this).show {
-            listItems(items = myItems) { dialog, index, text ->
-                // Invoked when the user taps an item
-                Log.d("MainActivity", "Selected item: $text")
+            listItemsSingleChoice(items = myItems, initialSelection = 0) { _, index, text ->
+                // Invoked when the user selects an item
+                Log.d("MainActivity", "Selected item: $text at index $index")
             }
+            positiveButton(res = R.string.select)
         }
 
         (application as MyApplication).appComponent.inject(this)
