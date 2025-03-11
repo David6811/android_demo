@@ -114,7 +114,15 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        
+        MaterialDialog(this).show {
+            positiveButton(R.string.agree) { dialog ->
+                Log.d("MainActivity", "Agree button clicked")
+            }
+            negativeButton(R.string.disagree) { dialog ->
+                Log.d("MainActivity", "Disagree button clicked")
+            }
+        }
+
         (application as MyApplication).appComponent.inject(this)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -124,28 +132,23 @@ class MainActivity : AppCompatActivity() {
 
         binding.appBarMain.fab.setOnClickListener {
 
-            MaterialDialog(this).show {
-                title(R.string.app_name)
-                message(R.string.app_name)
-            }
+            val note = Note(
+                objectId = ObjectIdGenerator.generateObjectId(),
+                title = "Title of Note 1",
+                content = "Content of Note 1",
+                parentObjectId = "0",
+                status = 1,
+                tags = "tag1",
+                createdAt = "2025-02-03T10:00:00Z",
+                updatedAt = "2025-02-03T10:00:00Z"
+            )
 
-//            val note = Note(
-//                objectId = ObjectIdGenerator.generateObjectId(),
-//                title = "Title of Note 1",
-//                content = "Content of Note 1",
-//                parentObjectId = "0",
-//                status = 1,
-//                tags = "tag1",
-//                createdAt = "2025-02-03T10:00:00Z",
-//                updatedAt = "2025-02-03T10:00:00Z"
-//            )
-//
-//            compositeDisposable.add(
-//                createNoteUseCase.insertNotes(note)
-//                    .subscribeOn(Schedulers.io()) // Run in background
-//                    .observeOn(AndroidSchedulers.mainThread()) // Observe on main thread
-//                    .subscribe()
-//            )
+            compositeDisposable.add(
+                createNoteUseCase.insertNotes(note)
+                    .subscribeOn(Schedulers.io()) // Run in background
+                    .observeOn(AndroidSchedulers.mainThread()) // Observe on main thread
+                    .subscribe()
+            )
         }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
