@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import com.afollestad.materialdialogs.MaterialDialog
 import com.example.myapplication.dao.NoteDao
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.entities.Note
@@ -123,23 +124,28 @@ class MainActivity : AppCompatActivity() {
 
         binding.appBarMain.fab.setOnClickListener {
 
-            val note = Note(
-                objectId = ObjectIdGenerator.generateObjectId(),
-                title = "Title of Note 1",
-                content = "Content of Note 1",
-                parentObjectId = "0",
-                status = 1,
-                tags = "tag1",
-                createdAt = "2025-02-03T10:00:00Z",
-                updatedAt = "2025-02-03T10:00:00Z"
-            )
+            MaterialDialog(this).show {
+                title(R.string.app_name)
+                message(R.string.app_name)
+            }
 
-            compositeDisposable.add(
-                createNoteUseCase.insertNotes(note)
-                    .subscribeOn(Schedulers.io()) // Run in background
-                    .observeOn(AndroidSchedulers.mainThread()) // Observe on main thread
-                    .subscribe()
-            )
+//            val note = Note(
+//                objectId = ObjectIdGenerator.generateObjectId(),
+//                title = "Title of Note 1",
+//                content = "Content of Note 1",
+//                parentObjectId = "0",
+//                status = 1,
+//                tags = "tag1",
+//                createdAt = "2025-02-03T10:00:00Z",
+//                updatedAt = "2025-02-03T10:00:00Z"
+//            )
+//
+//            compositeDisposable.add(
+//                createNoteUseCase.insertNotes(note)
+//                    .subscribeOn(Schedulers.io()) // Run in background
+//                    .observeOn(AndroidSchedulers.mainThread()) // Observe on main thread
+//                    .subscribe()
+//            )
         }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
