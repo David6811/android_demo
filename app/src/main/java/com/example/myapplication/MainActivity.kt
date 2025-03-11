@@ -21,6 +21,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.list.listItems
 import com.example.myapplication.dao.NoteDao
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.entities.Note
@@ -114,12 +115,12 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+        val myItems = listOf("Hello", "World")
+
         MaterialDialog(this).show {
-            positiveButton(R.string.agree) { dialog ->
-                Log.d("MainActivity", "Agree button clicked")
-            }
-            negativeButton(R.string.disagree) { dialog ->
-                Log.d("MainActivity", "Disagree button clicked")
+            listItems(items = myItems) { dialog, index, text ->
+                // Invoked when the user taps an item
+                Log.d("MainActivity", "Selected item: $text")
             }
         }
 
