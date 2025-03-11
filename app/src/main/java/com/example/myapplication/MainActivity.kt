@@ -21,6 +21,9 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.list.listItems
+import com.afollestad.materialdialogs.list.listItemsMultiChoice
+import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.example.myapplication.dao.NoteDao
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.entities.Note
@@ -113,8 +116,36 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+//https://github.com/afollestad/material-dialogs/blob/main/documentation/CORE.md#basics
+        val myItems = listOf("Hello", "World")
 
-        
+        val indices = intArrayOf(1)
+
+        MaterialDialog(this).show {
+            listItemsMultiChoice(items = myItems, initialSelection = indices) { dialog, indices, items ->
+                Log.d("MainActivity", "Selected indices: ${indices.size}")
+            }
+            positiveButton(R.string.select)
+        }
+
+
+//        val dialog: MaterialDialog = // ...
+//        val indices: IntArray = // ...
+//
+//            dialog.checkItems(indices)
+//
+//        dialog.uncheckItems(indices)
+//
+//        dialog.toggleItemsChecked(indices)
+//
+//        dialog.checkAllItems()
+//
+//        dialog.uncheckAllItems()
+//
+//        dialog.toggleAllItemsChecked()
+//
+//        val checked: Boolean = dialog.isItemChecked(index)
+
         (application as MyApplication).appComponent.inject(this)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -124,28 +155,23 @@ class MainActivity : AppCompatActivity() {
 
         binding.appBarMain.fab.setOnClickListener {
 
-            MaterialDialog(this).show {
-                title(R.string.app_name)
-                message(R.string.app_name)
-            }
+            val note = Note(
+                objectId = ObjectIdGenerator.generateObjectId(),
+                title = "Title of Note 1",
+                content = "Content of Note 1",
+                parentObjectId = "0",
+                status = 1,
+                tags = "tag1",
+                createdAt = "2025-02-03T10:00:00Z",
+                updatedAt = "2025-02-03T10:00:00Z"
+            )
 
-//            val note = Note(
-//                objectId = ObjectIdGenerator.generateObjectId(),
-//                title = "Title of Note 1",
-//                content = "Content of Note 1",
-//                parentObjectId = "0",
-//                status = 1,
-//                tags = "tag1",
-//                createdAt = "2025-02-03T10:00:00Z",
-//                updatedAt = "2025-02-03T10:00:00Z"
-//            )
-//
-//            compositeDisposable.add(
-//                createNoteUseCase.insertNotes(note)
-//                    .subscribeOn(Schedulers.io()) // Run in background
-//                    .observeOn(AndroidSchedulers.mainThread()) // Observe on main thread
-//                    .subscribe()
-//            )
+            compositeDisposable.add(
+                createNoteUseCase.insertNotes(note)
+                    .subscribeOn(Schedulers.io()) // Run in background
+                    .observeOn(AndroidSchedulers.mainThread()) // Observe on main thread
+                    .subscribe()
+            )
         }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
