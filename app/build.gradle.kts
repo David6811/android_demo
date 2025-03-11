@@ -72,6 +72,8 @@ dependencies {
 
     implementation("androidx.core:core-ktx:1.15.0")
 
+    implementation("com.afollestad.material-dialogs:core:3.3.0")
+
 
     // Dagger (Replace 2.50 with the latest version)
     implementation("com.google.dagger:dagger:2.50")
