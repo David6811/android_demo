@@ -22,6 +22,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.listItems
+import com.afollestad.materialdialogs.list.listItemsMultiChoice
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.example.myapplication.dao.NoteDao
 import com.example.myapplication.databinding.ActivityMainBinding
@@ -115,16 +116,35 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-
+//https://github.com/afollestad/material-dialogs/blob/main/documentation/CORE.md#basics
         val myItems = listOf("Hello", "World")
 
+        val indices = intArrayOf(1)
+
         MaterialDialog(this).show {
-            listItemsSingleChoice(items = myItems, initialSelection = 0) { _, index, text ->
-                // Invoked when the user selects an item
-                Log.d("MainActivity", "Selected item: $text at index $index")
+            listItemsMultiChoice(items = myItems, initialSelection = indices) { dialog, indices, items ->
+                Log.d("MainActivity", "Selected indices: ${indices.size}")
             }
-            positiveButton(res = R.string.select)
+            positiveButton(R.string.select)
         }
+
+
+//        val dialog: MaterialDialog = // ...
+//        val indices: IntArray = // ...
+//
+//            dialog.checkItems(indices)
+//
+//        dialog.uncheckItems(indices)
+//
+//        dialog.toggleItemsChecked(indices)
+//
+//        dialog.checkAllItems()
+//
+//        dialog.uncheckAllItems()
+//
+//        dialog.toggleAllItemsChecked()
+//
+//        val checked: Boolean = dialog.isItemChecked(index)
 
         (application as MyApplication).appComponent.inject(this)
 
