@@ -117,16 +117,16 @@ class MainActivity : AppCompatActivity() {
         }
 
 //https://github.com/afollestad/material-dialogs/blob/main/documentation/CORE.md#basics
-        val myItems = listOf("Hello", "World")
-
-        val indices = intArrayOf(1)
-
-        MaterialDialog(this).show {
-            listItemsMultiChoice(items = myItems, initialSelection = indices) { dialog, indices, items ->
-                Log.d("MainActivity", "Selected indices: ${indices.size}")
-            }
-            positiveButton(R.string.select)
-        }
+//        val myItems = listOf("Hello", "World")
+//
+//        val indices = intArrayOf(1)
+//
+//        MaterialDialog(this).show {
+//            listItemsMultiChoice(items = myItems, initialSelection = indices) { dialog, indices, items ->
+//                Log.d("MainActivity", "Selected indices: ${indices.size}")
+//            }
+//            positiveButton(R.string.select)
+//        }
 
 
 //        val dialog: MaterialDialog = // ...
