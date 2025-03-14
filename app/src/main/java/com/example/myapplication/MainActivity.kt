@@ -18,6 +18,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.afollestad.materialdialogs.MaterialDialog
@@ -33,6 +34,10 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Handler
+import android.os.Looper
 
 class MainActivity : AppCompatActivity() {
 
@@ -47,6 +52,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // 仅在 Android 13+ 请求通知权限
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 101)
+            }
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create an explicit intent for an Activity in your app.
@@ -112,7 +124,13 @@ class MainActivity : AppCompatActivity() {
                 )
                 .build()
 
-            notificationManager.notify(1, notification) // Display the notification with an ID (e.g., 1)
+            // **用 Handler 延迟 2 秒后显示通知**
+            Handler(Looper.getMainLooper()).postDelayed({
+                notificationManager.notify(1, notification)
+                Log.d("Notification", "Notification should be displayed now.")
+            }, 1000)
+
+//            notificationManager.notify(1, notification) // Display the notification with an ID (e.g., 1)
 
         }
 
