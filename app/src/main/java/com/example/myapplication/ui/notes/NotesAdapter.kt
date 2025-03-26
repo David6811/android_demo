@@ -11,12 +11,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.entities.Note
 
-class NotesAdapter(private var noteList: List<Note>) :
-    RecyclerView.Adapter<NotesAdapter.ViewHolder>() {
+class NotesAdapter(
+    private var noteList: List<Note>,
+    private val onDeleteClickListener: OnDeleteClickListener
+) : RecyclerView.Adapter<NotesAdapter.ViewHolder>() {
+
+    // 定义回调接口
+    interface OnDeleteClickListener {
+        fun onDeleteClick(note: Note)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_layout, parent, false)
-        return ViewHolder(view)
+        // Pass the onDeleteClickListener to the ViewHolder
+        return ViewHolder(view, onDeleteClickListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -34,9 +42,11 @@ class NotesAdapter(private var noteList: List<Note>) :
         notifyDataSetChanged()
     }
 
-
     // ViewHolder class
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(
+        itemView: View,
+        private val onDeleteClickListener: OnDeleteClickListener // Parameter is now properly declared
+    ) : RecyclerView.ViewHolder(itemView) {
         private val title: TextView = itemView.findViewById(R.id.title)
         private val content: TextView = itemView.findViewById(R.id.content)
         private val deleteButton: ImageView = itemView.findViewById(R.id.delete_note)
@@ -45,8 +55,8 @@ class NotesAdapter(private var noteList: List<Note>) :
             title.text = note.title
             content.text = note.content
             deleteButton.setOnClickListener {
-                // Trigger the delete action when the delete button is clicked
-               Log.d("NotesAdapter", "Delete button clicked for note: ${note.title}")
+                Log.d("NotesAdapter", "Delete button clicked for note: ${note.title}")
+                onDeleteClickListener.onDeleteClick(note)
             }
         }
     }
