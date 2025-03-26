@@ -13,18 +13,13 @@ import com.example.myapplication.entities.Note
 
 class NotesAdapter(
     private var noteList: List<Note>,
-    private val onDeleteClickListener: OnDeleteClickListener
+    private val onDeleteClick: (Note) -> Unit // 用 Lambda 替代接口
 ) : RecyclerView.Adapter<NotesAdapter.ViewHolder>() {
-
-    // 定义回调接口
-    interface OnDeleteClickListener {
-        fun onDeleteClick(note: Note)
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_layout, parent, false)
         // Pass the onDeleteClickListener to the ViewHolder
-        return ViewHolder(view, onDeleteClickListener)
+        return ViewHolder(view, onDeleteClick) // 传递 Lambda
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -45,7 +40,7 @@ class NotesAdapter(
     // ViewHolder class
     class ViewHolder(
         itemView: View,
-        private val onDeleteClickListener: OnDeleteClickListener // Parameter is now properly declared
+        private val onDeleteClick: (Note) -> Unit
     ) : RecyclerView.ViewHolder(itemView) {
         private val title: TextView = itemView.findViewById(R.id.title)
         private val content: TextView = itemView.findViewById(R.id.content)
@@ -56,7 +51,7 @@ class NotesAdapter(
             content.text = note.content
             deleteButton.setOnClickListener {
                 Log.d("NotesAdapter", "Delete button clicked for note: ${note.title}")
-                onDeleteClickListener.onDeleteClick(note)
+                onDeleteClick(note)
             }
         }
     }
