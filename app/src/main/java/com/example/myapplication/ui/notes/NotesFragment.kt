@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.notes
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -7,15 +8,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.MyApplication
 import com.example.myapplication.dao.NoteDao
 import com.example.myapplication.databinding.FragmentNotesBinding
 import com.example.myapplication.entities.Note
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class NotesFragment : Fragment(), NotesAdapter.OnDeleteClickListener  {
+class NotesFragment : Fragment()  {
     private var _binding: FragmentNotesBinding? = null
     private val binding get() = _binding!!
 
@@ -38,7 +42,18 @@ class NotesFragment : Fragment(), NotesAdapter.OnDeleteClickListener  {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val notesAdapter = NotesAdapter(emptyList(), this)
+        val notesAdapter = NotesAdapter(emptyList()) { note -> // 直接使用 Lambda
+            AlertDialog.Builder(requireContext())
+                .setTitle("确认删除")
+                .setMessage("确定要删除笔记 '${note.title}' 吗？")
+                .setPositiveButton("删除") { _, _ ->
+                    viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+                        noteDao.delete(note)
+                    }
+                }
+                .setNegativeButton("取消", null)
+                .show()
+        }
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -55,9 +70,5 @@ class NotesFragment : Fragment(), NotesAdapter.OnDeleteClickListener  {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun onDeleteClick(note: Note) {
-        Log.d("NotesFragment", "Delete button clicked for note: ${note.title}")
     }
 }
