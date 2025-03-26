@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.notes
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
@@ -8,15 +9,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.MyApplication
 import com.example.myapplication.dao.NoteDao
 import com.example.myapplication.databinding.FragmentNotesBinding
-import com.example.myapplication.entities.Note
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.myapplication.usecase.DeleteNoteUseCase
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 class NotesFragment : Fragment()  {
@@ -25,6 +25,9 @@ class NotesFragment : Fragment()  {
 
     @Inject
     lateinit var noteDao: NoteDao
+
+    @Inject
+    lateinit var deleteNoteUseCase: DeleteNoteUseCase
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -39,6 +42,7 @@ class NotesFragment : Fragment()  {
         return binding.root
     }
 
+    @SuppressLint("CheckResult")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -47,9 +51,14 @@ class NotesFragment : Fragment()  {
                 .setTitle("确认删除")
                 .setMessage("确定要删除笔记 '${note.title}' 吗？")
                 .setPositiveButton("删除") { _, _ ->
-                    viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                        noteDao.delete(note)
-                    }
+                    deleteNoteUseCase.deleteNote(note)
+                        .subscribeOn(Schedulers.io()) // Run on a background thread
+                        .observeOn(AndroidSchedulers.mainThread()) // Observe results on the main thread
+                        .subscribe({
+                            Log.d("NotesFragment", "Note deleted successfully")
+                        }, { error ->
+                            Log.e("NotesFragment", "Error deleting note", error)
+                        })
                 }
                 .setNegativeButton("取消", null)
                 .show()
