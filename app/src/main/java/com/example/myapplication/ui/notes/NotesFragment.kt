@@ -2,6 +2,7 @@ package com.example.myapplication.ui.notes
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.MyApplication
 import com.example.myapplication.dao.NoteDao
 import com.example.myapplication.databinding.FragmentNotesBinding
+import com.example.myapplication.entities.Note
 import javax.inject.Inject
 
-class NotesFragment : Fragment() {
+class NotesFragment : Fragment(), NotesAdapter.OnDeleteClickListener  {
     private var _binding: FragmentNotesBinding? = null
     private val binding get() = _binding!!
 
@@ -36,7 +38,7 @@ class NotesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val notesAdapter = NotesAdapter(emptyList())
+        val notesAdapter = NotesAdapter(emptyList(), this)
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -53,5 +55,9 @@ class NotesFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onDeleteClick(note: Note) {
+        Log.d("NotesFragment", "Delete button clicked for note: ${note.title}")
     }
 }
