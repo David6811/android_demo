@@ -1,9 +1,11 @@
 package com.example.myapplication.ui.notes
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
@@ -37,10 +39,15 @@ class NotesAdapter(private var noteList: List<Note>) :
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val title: TextView = itemView.findViewById(R.id.title)
         private val content: TextView = itemView.findViewById(R.id.content)
+        private val deleteButton: ImageView = itemView.findViewById(R.id.delete_note)
 
         fun bind(note: Note) {
             title.text = note.title
             content.text = note.content
+            deleteButton.setOnClickListener {
+                // Trigger the delete action when the delete button is clicked
+               Log.d("NotesAdapter", "Delete button clicked for note: ${note.title}")
+            }
         }
     }
 }
