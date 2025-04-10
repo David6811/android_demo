@@ -48,8 +48,6 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var createNoteUseCase: CreateNoteUseCase
 
-    private val compositeDisposable = CompositeDisposable()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -171,26 +169,6 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
-        binding.appBarMain.fab.setOnClickListener {
-
-            val note = Note(
-                objectId = ObjectIdGenerator.generateObjectId(),
-                title = "Title of Note 1",
-                content = "Content of Note 1",
-                parentObjectId = "0",
-                status = 1,
-                tags = "tag1",
-                createdAt = "2025-02-03T10:00:00Z",
-                updatedAt = "2025-02-03T10:00:00Z"
-            )
-
-            compositeDisposable.add(
-                createNoteUseCase.insertNotes(note)
-                    .subscribeOn(Schedulers.io()) // Run in background
-                    .observeOn(AndroidSchedulers.mainThread()) // Observe on main thread
-                    .subscribe()
-            )
-        }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)

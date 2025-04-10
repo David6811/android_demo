@@ -7,7 +7,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.myapplication.databinding.FragmentGalleryBinding
+import com.example.myapplication.workers.UploadWorker
 
 class GalleryFragment : Fragment() {
 
@@ -32,7 +35,21 @@ class GalleryFragment : Fragment() {
         galleryViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
+
+        // Create and schedule the WorkRequest
+        scheduleUploadWork()
+
         return root
+    }
+
+    private fun scheduleUploadWork() {
+        // Create a WorkRequest for UploadWorker
+        val uploadWorkRequest = OneTimeWorkRequestBuilder<UploadWorker>()
+            .build()
+
+        // Schedule the work with WorkManager
+        WorkManager.getInstance(requireContext())
+            .enqueue(uploadWorkRequest)
     }
 
     override fun onDestroyView() {
