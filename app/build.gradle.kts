@@ -40,7 +40,11 @@ android {
     }
 }
 
+val work_version = "2.10.0"
 dependencies {
+    // Kotlin + coroutines
+    implementation("androidx.work:work-runtime-ktx:$work_version")
+
     implementation(libs.androidx.room.runtime)
     implementation(libs.core.ktx)
     ksp(libs.room.compiler)
