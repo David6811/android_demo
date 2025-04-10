@@ -1,11 +1,13 @@
 package com.example.myapplication.ui.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import com.example.myapplication.MyApplication
 import com.example.myapplication.databinding.FragmentHomeBinding // Import binding class
 import com.example.myapplication.entities.Note
 import com.example.myapplication.usecase.CreateNoteUseCase
@@ -28,6 +30,12 @@ class HomeFragment : Fragment() {
 
     @Inject
     lateinit var createNoteUseCase: CreateNoteUseCase
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        // Inject dependencies here
+        (requireActivity().application as MyApplication).appComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,15 +80,15 @@ class HomeFragment : Fragment() {
                 updatedAt = "2025-02-03T10:00:00Z"
             )
 
-//            compositeDisposable.add(
-//                createNoteUseCase.insertNotes(note)
-//                    .subscribeOn(Schedulers.io()) // Run in background
-//                    .observeOn(AndroidSchedulers.mainThread()) // Observe on main thread
-//                    .subscribe(
-//                        { /* Success case - optional */ },
-//                        { error -> error.printStackTrace() } // Handle errors
-//                    )
-//            )
+            compositeDisposable.add(
+                createNoteUseCase.insertNotes(note)
+                    .subscribeOn(Schedulers.io()) // Run in background
+                    .observeOn(AndroidSchedulers.mainThread()) // Observe on main thread
+                    .subscribe(
+                        { /* Success case - optional */ },
+                        { error -> error.printStackTrace() } // Handle errors
+                    )
+            )
         }
     }
 
