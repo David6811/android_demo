@@ -36,8 +36,10 @@ class GalleryFragment : Fragment() {
             textView.text = it
         }
 
-        // Create and schedule the WorkRequest
-        scheduleUploadWork()
+        // Set up button click listener
+        binding.uploadButton.setOnClickListener {
+            scheduleUploadWork()
+        }
 
         return root
     }
