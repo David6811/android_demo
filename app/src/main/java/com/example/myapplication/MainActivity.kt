@@ -38,6 +38,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Handler
 import android.os.Looper
+import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
 
@@ -48,7 +49,35 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var createNoteUseCase: CreateNoteUseCase
 
+    companion object {
+        private var isDynamicTheme = true // Tracks theme state, defaults to Theme.MyApplication
+    }
+
+    // Called by SlideshowFragment to toggle theme
+    fun toggleTheme() {
+        isDynamicTheme = !isDynamicTheme
+        recreate() // Recreate activity to apply new theme
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Apply theme before super.onCreate and setContentView
+         setTheme(if (isDynamicTheme) R.style.Theme_MyApplication_Dynamic else R.style.Theme_MyApplication)
+
+        // Debug: Show which theme is applied
+        Toast.makeText(
+            this,
+            "Applied ${if (isDynamicTheme) "Dynamic" else "Default"} Theme",
+            Toast.LENGTH_SHORT
+        ).show()
+
+        // Debug: Show which theme is applied
+        Toast.makeText(
+            this,
+            "Applied Theme",
+            Toast.LENGTH_SHORT
+        ).show()
+
+
         super.onCreate(savedInstanceState)
 
         // 仅在 Android 13+ 请求通知权限
