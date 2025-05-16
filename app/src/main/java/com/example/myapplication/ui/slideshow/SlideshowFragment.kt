@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.databinding.FragmentSlideshowBinding
@@ -31,6 +32,11 @@ class SlideshowFragment : Fragment() {
         val textView: TextView = binding.textSlideshow
         slideshowViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
+        }
+
+        // Add click listener to the button
+        binding.buttonSlideshow.setOnClickListener {
+            Toast.makeText(requireContext(), "Button Clicked!", Toast.LENGTH_SHORT).show()
         }
         return root
     }
