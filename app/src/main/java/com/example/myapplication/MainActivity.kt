@@ -38,6 +38,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Handler
 import android.os.Looper
+import android.view.MenuItem
 import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var createNoteUseCase: CreateNoteUseCase
 
     companion object {
-        private var isDynamicTheme = true // Tracks theme state, defaults to Theme.MyApplication
+        private var isDynamicTheme = false // Tracks theme state, defaults to Theme.MyApplication
     }
 
     // Called by SlideshowFragment to toggle theme
@@ -198,6 +199,7 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
+
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
@@ -230,6 +232,7 @@ class MainActivity : AppCompatActivity() {
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
                     // Handle search query submission (e.g., filter data)
+                    Log.e("Menu:", "SearchView!")
                     return false
                 }
 
@@ -248,5 +251,15 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_toggle_theme -> {
+                toggleTheme()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

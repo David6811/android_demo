@@ -8,4 +8,9 @@
         android:title="search"
         app:showAsAction="always"
         android:actionViewClass="androidx.appcompat.widget.SearchView"/>
+
+    <item
+        android:id="@+id/action_toggle_theme"
+        android:title="切换主题"
+        android:showAsAction="never" />
 </menu>
