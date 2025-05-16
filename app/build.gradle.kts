@@ -64,7 +64,6 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
@@ -77,6 +76,9 @@ dependencies {
     implementation("androidx.core:core-ktx:1.15.0")
 
     implementation("com.afollestad.material-dialogs:core:3.3.0")
+
+    implementation ("com.google.android.material:material:1.12.0")
+
 
 
     // Dagger (Replace 2.50 with the latest version)
